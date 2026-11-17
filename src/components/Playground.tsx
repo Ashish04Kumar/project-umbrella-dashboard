@@ -13,6 +13,7 @@ import { ChatLog, type ChatMessage, type DueReminder } from "./ChatLog";
 import { LiveLog } from "./LiveLog";
 import { SidePanel } from "./SidePanel";
 import { Stage } from "./Stage";
+import { HomePanel } from "./HomePanel";
 import { TestPanel } from "./TestPanel";
 import { TokenBar } from "./TokenBar";
 import { TracePanel } from "./TracePanel";
@@ -60,6 +61,7 @@ export default function Playground() {
   const [refreshKey, setRefreshKey] = useState(0);
   const [traceOpen, setTraceOpen] = useState(false);
   const [testOpen, setTestOpen] = useState(false);
+  const [homeOpen, setHomeOpen] = useState(false);
   const [toasts, setToasts] = useState<{ id: string; text: string }[]>([]);
   const [live, setLive] = useState(false);
   const [liveStarting, setLiveStarting] = useState(false);
@@ -567,6 +569,8 @@ export default function Playground() {
             onClick={() => setTraceOpen(!traceOpen)}>🧠 Trace</button>
           <button type="button" className={"trace" + (testOpen ? " on" : "")} title="A simulated consumer chats with Umbrella in a new thread; see what goes to the LLM and what comes back"
             onClick={() => setTestOpen(true)}>🧪 Test</button>
+          <button type="button" className={"trace" + (homeOpen ? " on" : "")} title="Home automation: simulated lights, fan, AC and TV, fake camera/gesture events, the action log and the narrator"
+            onClick={() => setHomeOpen(true)}>🏠 Home</button>
           <span className="grow" />
           <label className="speed">Voice speed <input type="range" min={0.7} max={1.4} step={0.05} value={speed} onChange={(e) => setSpeed(Number(e.target.value))} /> <span>{speed.toFixed(2) + "×"}</span></label>
           <span className="status" id="health">{status}</span>
@@ -598,6 +602,7 @@ export default function Playground() {
 
       {traceOpen && <TracePanel user={user} thread={thread} refreshKey={refreshKey} onClose={() => setTraceOpen(false)} />}
       {testOpen && <TestPanel onClose={() => setTestOpen(false)} onOpenChat={openTestChat} />}
+      {homeOpen && <HomePanel onClose={() => setHomeOpen(false)} />}
       {toasts.map((t) => <div key={t.id} className="toast">{"⏰ " + t.text}</div>)}
     </>
   );
